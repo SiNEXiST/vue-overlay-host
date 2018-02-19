@@ -37,9 +37,15 @@ new Vue({
                         message: "Test 123"
                     }
                 })
-                .then(obj => obj.promise)
+                .then(obj => {
+                    setTimeout(() => obj.abort(), 1000);
+                    return obj.promise;
+                })
                 .then(value => {
                     console.log("closed:", value);
+                })
+                .catch(value => {
+                    console.log('aborted:', value)
                 });
         }
     },

@@ -1,3 +1,67 @@
+function validateSettings(settings) {
+    if (settings == null || typeof settings !== 'object') {
+        new TypeError('The Settings have to be specified!');
+        return;
+    }
+    if (
+        !settings.hasOwnProperty('component') ||
+        settings.component == null ||
+        (typeof settings !== 'string' &&
+            typeof settings !== 'object')
+    ) {
+        new TypeError('The Settings does not have a valid component property!');
+        return;
+    }
+
+    if (typeof settings.overlay !== 'object' || settings.overlay == null) {
+        const overlay = {
+            show: !!settings.overlay,
+            closeOnClick: true
+        };
+    } else {
+        settings.overlay = {
+            show: false,
+            closeOnClick: true,
+            ...settings.overlay
+        };
+    }
+
+    return settings;
+}
+
+function removeItem(store, payload) {
+    if (typeof payload === 'string') {
+        payload = { id: payload };
+    }
+    const { id, value, origin } = payload;
+    let removed = false;
+    let removedItem = null;
+    const items = store.state.items;
+
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        if (item.id === id) {
+            clearTimeout(item.timeoutId);
+            items.splice(i, 1);
+            removed = true;
+            removedItem = item;
+            break;
+        }
+    }
+
+    if (removed) {
+        store.commit('setItems', items);
+    }
+
+    return {
+        id,
+        value,
+        origin,
+        removed,
+        item: removedItem
+    };
+}
+
 export default function (pluginSettings) {
     if (typeof pluginSettings === 'number') {
         pluginSettings = {
@@ -29,32 +93,7 @@ export default function (pluginSettings) {
         },
         actions: {
             show: (store, settings) => {
-                if (settings == null || typeof settings !== 'object') {
-                    new TypeError('The Settings have to be specified!');
-                    return;
-                }
-                if (
-                    !settings.hasOwnProperty('component') ||
-                    settings.component == null ||
-                    (typeof settings !== 'string' &&
-                        typeof settings !== 'object')
-                ) {
-                    new TypeError('The Settings does not have a valid component property!');
-                    return;
-                }
-
-                if (typeof settings.overlay !== 'object' || settings.overlay == null) {
-                    const overlay = {
-                        show: !!settings.overlay,
-                        closeOnClick: true
-                    };
-                } else {
-                    settings.overlay = {
-                        show: false,
-                        closeOnClick: true,
-                        ...settings.overlay
-                    };
-                }
+                settings = validateSettings(settings);
 
                 let resolve = () => {};
                 let reject = () => {};
@@ -72,8 +111,6 @@ export default function (pluginSettings) {
                     settings: {
                         timeout: defaultTimeout,
                         closeOnEscape: true,
-                        class: null,
-                        props: {},
                         ...settings
                     }
                 };
@@ -95,37 +132,29 @@ export default function (pluginSettings) {
                         value,
                         origin
                     }),
+                    abort: (value, origin) => store.dispatch('abort', {
+                        id,
+                        value,
+                        origin
+                    }),
                 };
             },
             close: (store, payload) => {
-                if (typeof payload === 'string') {
-                    payload = { id: payload };
+                const res = removeItem(store, payload);
+                const { removed, item, value, origin } = res;
+                if (removed) {
+                    item.resolver({ value, origin });
                 }
-                const { id, value, origin } = payload;
-                return new Promise((resolve, reject) => {
-                    let removed = false;
-                    const items = store.state.items;
-
-                    for (let i = 0; i < items.length; i++) {
-                        const item = items[i];
-                        if (item.id === id) {
-                            clearTimeout(item.timeoutId);
-                            item.resolver({ value, origin });
-                            items.splice(i, 1);
-                            removed = true;
-                            break;
-                        }
-                    }
-
-                    if (removed) {
-                        store.commit('setItems', items);
-                    } else {
-                        reject();
-                    }
-
-                    resolve(removed);
-                });
+                return removed;
             },
+            abort: (store, payload) => {
+                const res = removeItem(store, payload);
+                const { removed, item, value, origin } = res;
+                if (removed) {
+                    item.rejector({ value, origin });
+                }
+                return removed;
+            }
         }
     };
 }
