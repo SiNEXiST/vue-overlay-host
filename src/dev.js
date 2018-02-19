@@ -37,6 +37,7 @@ new Vue({
                         message: "Test 123"
                     }
                 })
+                .then(obj => obj.promise)
                 .then(value => {
                     console.log("closed:", value);
                 });

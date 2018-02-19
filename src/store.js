@@ -29,64 +29,80 @@ export default function (pluginSettings) {
         },
         actions: {
             show: (store, settings) => {
-                return new Promise((resolve, reject) => {
-                    if (settings == null || typeof settings !== 'object') {
-                        reject(new TypeError('The Settings have to be specified!'));
-                        return;
-                    }
-                    if (
-                        !settings.hasOwnProperty('component') ||
-                        settings.component == null ||
-                        (typeof settings !== 'string' &&
-                            typeof settings !== 'object')
-                    ) {
-                        reject(new TypeError('The Settings does not have a valid component property!'));
-                        return;
-                    }
+                if (settings == null || typeof settings !== 'object') {
+                    new TypeError('The Settings have to be specified!');
+                    return;
+                }
+                if (
+                    !settings.hasOwnProperty('component') ||
+                    settings.component == null ||
+                    (typeof settings !== 'string' &&
+                        typeof settings !== 'object')
+                ) {
+                    new TypeError('The Settings does not have a valid component property!');
+                    return;
+                }
 
-                    if (typeof settings.overlay !== 'object' || settings.overlay == null) {
-                        const overlay = {
-                            show: !!settings.overlay,
-                            closeOnClick: true
-                        };
-                    } else {
-                        settings.overlay = {
-                            show: false,
-                            closeOnClick: true,
-                            ...settings.overlay
-                        };
-                    }
-
-                    const id = store.state.idCounter;
-                    const item = {
-                        resolver: resolve,
-                        id,
-                        settings: {
-                            timeout: defaultTimeout,
-                            closeOnEscape: true,
-                            class: null,
-                            props: {},
-                            ...settings
-                        }
+                if (typeof settings.overlay !== 'object' || settings.overlay == null) {
+                    const overlay = {
+                        show: !!settings.overlay,
+                        closeOnClick: true
                     };
-                    store.commit('increaseCounter');
+                } else {
+                    settings.overlay = {
+                        show: false,
+                        closeOnClick: true,
+                        ...settings.overlay
+                    };
+                }
 
-                    if (item.settings.timeout > 0) {
-                        item.timeoutId = setTimeout(() => {
-                            store.dispatch('close', item.id);
-                        }, item.settings.timeout);
-                    }
-                    const items = store.state.items;
-                    items.push(item);
-                    store.commit('setItems', items);
+                let resolve = () => {};
+                let reject = () => {};
+                const promise = new Promise((re, rj) => {
+                    resolve = re;
+                    reject = rj;
                 });
+                const id = store.state.idCounter;
+                store.commit('increaseCounter');
+
+                const item = {
+                    id,
+                    resolver: resolve,
+                    rejector: reject,
+                    settings: {
+                        timeout: defaultTimeout,
+                        closeOnEscape: true,
+                        class: null,
+                        props: {},
+                        ...settings
+                    }
+                };
+
+                if (item.settings.timeout > 0) {
+                    item.timeoutId = setTimeout(() => {
+                        store.dispatch('close', item.id);
+                    }, item.settings.timeout);
+                }
+                const items = store.state.items;
+                items.push(item);
+                store.commit('setItems', items);
+
+                return {
+                    id,
+                    promise,
+                    close: (value, origin) => store.dispatch('close', {
+                        id,
+                        value,
+                        origin
+                    }),
+                };
             },
             close: (store, payload) => {
                 if (typeof payload === 'string') {
                     payload = { id: payload };
                 }
                 const { id, value, origin } = payload;
-                return new Promise(resolve => {
+                return new Promise((resolve, reject) => {
                     let removed = false;
                     const items = store.state.items;
 
@@ -103,6 +119,8 @@ export default function (pluginSettings) {
 
                     if (removed) {
                         store.commit('setItems', items);
+                    } else {
+                        reject();
                     }
 
                     resolve(removed);
