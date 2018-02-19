@@ -1,11 +1,11 @@
-export default function(pluginSettings) {
-    if (typeof pluginSettings === "number") {
+export default function (pluginSettings) {
+    if (typeof pluginSettings === 'number') {
         pluginSettings = {
             timeout: pluginSettings
         };
     } else if (
         pluginSettings == null ||
-        typeof pluginSettings !== "object" ||
+        typeof pluginSettings !== 'object' ||
         Array.isArray(pluginSettings)
     ) {
         // Apply default
@@ -30,23 +30,17 @@ export default function(pluginSettings) {
         actions: {
             show: (store, settings) => {
                 return new Promise((resolve, reject) => {
-                    if (settings == null || typeof settings !== "object") {
-                        reject(
-                            new TypeError("The Settings have to be specified!")
-                        );
+                    if (settings == null || typeof settings !== 'object') {
+                        reject(new TypeError('The Settings have to be specified!'));
                         return;
                     }
                     if (
-                        !settings.hasOwnProperty("component") ||
+                        !settings.hasOwnProperty('component') ||
                         settings.component == null ||
-                        (typeof settings !== "string" &&
-                            typeof settings !== "object")
+                        (typeof settings !== 'string' &&
+                            typeof settings !== 'object')
                     ) {
-                        reject(
-                            new TypeError(
-                                "The Settings does not have a valid component property!"
-                            )
-                        );
+                        reject(new TypeError('The Settings does not have a valid component property!'));
                         return;
                     }
 
@@ -75,16 +69,16 @@ export default function(pluginSettings) {
                             ...settings
                         }
                     };
-                    store.commit("increaseCounter");
+                    store.commit('increaseCounter');
 
                     if (item.settings.timeout > 0) {
                         item.timeoutId = setTimeout(() => {
-                            store.dispatch("close", item.id);
+                            store.dispatch('close', item.id);
                         }, item.settings.timeout);
                     }
                     const items = store.state.items;
                     items.push(item);
-                    store.commit("setItems", items);
+                    store.commit('setItems', items);
                 });
             },
             close: (store, payload) => {
@@ -108,7 +102,7 @@ export default function(pluginSettings) {
                     }
 
                     if (removed) {
-                        store.commit("setItems", items);
+                        store.commit('setItems', items);
                     }
 
                     resolve(removed);

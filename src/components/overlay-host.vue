@@ -18,25 +18,25 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
 export default {
-    name: "overlay-host",
+    name: 'overlay-host',
     created() {
         this.storeWatcher = this.$store.watch(
-            state => state["overlay-host"].items,
+            state => state['overlay-host'].items,
             this.itemsChange,
             {
                 deep: true
             }
         );
-        window.addEventListener("keydown", this.handleWindowKeydown);
+        window.addEventListener('keydown', this.handleWindowKeydown);
     },
     beforeDestroy() {
         if (this.storeWatcher != null) {
             this.storeWatcher();
         }
-        window.removeEventListener("keydown", this.handleWindowKeydown);
+        window.removeEventListener('keydown', this.handleWindowKeydown);
     },
     data() {
         return {
@@ -45,7 +45,7 @@ export default {
         };
     },
     computed: {
-        ...mapState("overlay-host", ["items"])
+        ...mapState('overlay-host', ['items'])
     },
     methods: {
         itemsChange() {
@@ -61,9 +61,9 @@ export default {
             this.removeLast('click');
         },
         handleWindowKeydown(event) {
-            if (event.key === "Escape" || event.keyCode === 27) {
+            if (event.key === 'Escape' || event.keyCode === 27) {
                 event.preventDefault();
-                this.removeLast("escape");
+                this.removeLast('escape');
             }
         },
         removeLast(origin) {
@@ -78,8 +78,8 @@ export default {
             for (let i = this.items.length - 1; i >= 0; i--) {
                 const item = this.items[i];
                 if (!item.settings.overlay.show ||
-                    (origin === "escape" && !item.settings.closeOnEscape) ||
-                    (origin === "click" && !item.settings.overlay.closeOnClick)
+                    (origin === 'escape' && !item.settings.closeOnEscape) ||
+                    (origin === 'click' && !item.settings.overlay.closeOnClick)
                 ) {
                     continue;
                 }
@@ -92,7 +92,7 @@ export default {
             }
 
             if (removed) {
-                this.$store.commit("overlay-host/setItems", this.items);
+                this.$store.commit('overlay-host/setItems', this.items);
             }
         }
     }
