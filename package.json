@@ -1,56 +1,45 @@
 {
   "name": "vue-overlay-host",
-  "version": "0.0.1",
-  "description": "Management Component for easy overlay-component injection",
-  "author": {
-    "name": "Dominik Decker",
-    "email": "me@sinexist.de"
-  },
-  "main": "src/index.js",
-  "license": "MIT",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "lint": "eslint src/**/*.vue",
-    "build": "poi build --format cjs --dist dist",
-    "dev": "webpack-dev-server",
-    "test": "poi test",
-    "test:watch": "poi test --watch",
-    "test:cov": "poi test --coverage"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --target lib --name vue-overlay-host ./src/lib.js",
+    "lint": "vue-cli-service lint"
   },
-  "keywords": [
-    "vue",
-    "component"
-  ],
-  "files": [
-    "src/",
-    "dist/"
-  ],
-  "dependencies": {},
+  "dependencies": {
+    "vue": "^2.5.16",
+    "vuex": "^3.0.1"
+  },
   "devDependencies": {
-    "babel-loader": "^7.1.2",
-    "babel-plugin-istanbul": "^4.1.1",
-    "babel-plugin-transform-runtime": "^6.22.0",
-    "babel-preset-env": "^1.3.2",
-    "babel-preset-stage-2": "^6.22.0",
-    "chai": "^4.1.2",
-    "css-loader": "^0.28.8",
-    "eslint": "^4.11.0",
-    "eslint-plugin-vue": "beta",
-    "karma-chai": "^0.1.0",
-    "karma-phantomjs-launcher": "^1.0.4",
-    "karma-phantomjs-shim": "^1.5.0",
-    "node-glob": "^1.2.0",
-    "node-loader": "^0.6.0",
-    "poi": "^9.5.2",
-    "poi-preset-karma": "^9.2.1",
-    "sass-loader": "^6.0.6",
-    "style-loader": "^0.19.1",
-    "vue-loader": "^13.7.0",
-    "vue-style-loader": "^3.0.3",
-    "vuex": "^2.1.2",
-    "webpack": "^3.1.0",
-    "webpack-dev-server": "^2.10.1"
+    "@vue/cli": "^3.0.0-rc.3",
+    "@vue/cli-plugin-babel": "^3.0.0-rc.3",
+    "@vue/cli-plugin-eslint": "^3.0.0-rc.3",
+    "@vue/cli-service": "^3.0.0-beta.15",
+    "vue-template-compiler": "^2.5.16"
   },
-  "peerDependencies": {
-    "vue": "^2.0.0"
-  }
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
 }

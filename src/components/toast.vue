@@ -16,7 +16,7 @@ export default {
     position: absolute;
     right: 15px;
     top: 20px;
-    background: rgb(230, 141, 68);
+    background: #42b983;
     transform: translateX(0);
     z-index: 1050;
 }

@@ -14,7 +14,7 @@ function validateSettings(settings) {
     }
 
     if (typeof settings.overlay !== 'object' || settings.overlay == null) {
-        const overlay = {
+        settings.overlay = {
             show: !!settings.overlay,
             closeOnClick: true
         };
@@ -92,7 +92,7 @@ export default function (pluginSettings) {
             }
         },
         actions: {
-            show: (store, settings) => {
+            show(store, settings) {
                 settings = validateSettings(settings);
 
                 let resolve = () => {};
@@ -127,19 +127,11 @@ export default function (pluginSettings) {
                 return {
                     id,
                     promise,
-                    close: (value, origin) => store.dispatch('close', {
-                        id,
-                        value,
-                        origin
-                    }),
-                    abort: (value, origin) => store.dispatch('abort', {
-                        id,
-                        value,
-                        origin
-                    }),
-                };
+                    close: (value, origin) => store.dispatch('close', { id, value, origin }),
+                    abort: (value, origin) => store.dispatch('abort', { id, value, origin }),
+                }
             },
-            close: (store, payload) => {
+            close(store, payload) {
                 const res = removeItem(store, payload);
                 const { removed, item, value, origin } = res;
                 if (removed) {
@@ -147,7 +139,7 @@ export default function (pluginSettings) {
                 }
                 return removed;
             },
-            abort: (store, payload) => {
+            abort(store, payload) {
                 const res = removeItem(store, payload);
                 const { removed, item, value, origin } = res;
                 if (removed) {
