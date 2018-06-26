@@ -3,9 +3,11 @@ import Vuex from 'vuex';
 import App from './App.vue';
 
 import { OverlayHost, OverlayHostPlugin } from './lib';
+import Example from './components/example';
 import Toast from './components/toast';
 
 Vue.config.productionTip = false;
+Vue.component('example', Example);
 Vue.component('overlay-host', OverlayHost);
 Vue.component('toast', Toast);
 Vue.use(Vuex);
