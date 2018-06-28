@@ -117,7 +117,7 @@ export default function (pluginSettings) {
 
                 if (item.settings.timeout > 0) {
                     item.timeoutId = setTimeout(() => {
-                        store.dispatch('close', item.id);
+                        store.dispatch('close', { id: item.id, origin: 'timeout' });
                     }, item.settings.timeout);
                 }
                 const items = store.state.items;
