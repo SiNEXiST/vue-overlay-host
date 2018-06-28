@@ -1,7 +1,8 @@
 {
     "root": true,
     "env": {
-        "node": true
+        "node": true,
+        "mocha": true
     },
     "plugins": ["vue", "prettier"],
     "extends": ["plugin:vue/essential", "eslint:recommended"],
