@@ -1,4 +1,4 @@
-import OverlayHost from './components/overlay-host';
+import OverlayHost from './components/OverlayHost';
 import store from './store';
 
 export { OverlayHost };

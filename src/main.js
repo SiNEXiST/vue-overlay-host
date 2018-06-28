@@ -3,8 +3,8 @@ import Vuex from 'vuex';
 import App from './App.vue';
 
 import { OverlayHost, OverlayHostPlugin } from './lib';
-import Example from './components/example';
-import Toast from './components/toast';
+import Example from './components/Example';
+import Toast from './components/Toast';
 
 Vue.config.productionTip = false;
 Vue.component('example', Example);
