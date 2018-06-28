@@ -1,4 +1,4 @@
-[![Travis](https://img.shields.io/travis/sinexist/vue-overlay-host.svg?style=flat-square)](https://travis-ci.org/entailment/vue-overlay-host)
+[![Travis](https://img.shields.io/travis/sinexist/vue-overlay-host.svg?style=flat-square)](https://travis-ci.org/SiNEXiST/vue-overlay-host)
 [![npm](https://img.shields.io/npm/v/vue-overlay-host.svg?style=flat-square)](https://www.npmjs.com/package/vue-overlay-host)
 [![npm Donwloads](https://img.shields.io/npm/dm/vue-overlay-host.svg?style=flat-square)](https://www.npmjs.com/package/vue-overlay-host)
 [![License](https://img.shields.io/github/license/sinexist/vue-overlay-host.svg?style=flat-square)](https://github.com/SiNEXiST/vue-overlay-host/blob/master/LICENSE)
