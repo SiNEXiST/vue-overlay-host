@@ -23,13 +23,9 @@ import { mapState } from 'vuex';
 export default {
     name: 'overlay-host',
     created() {
-        this.storeWatcher = this.$store.watch(
-            state => state['overlay-host'].items,
-            this.itemsChange,
-            {
-                deep: true
-            }
-        );
+        this.storeWatcher = this.$store.watch(state => state['overlay-host'].items, this.itemsChange, {
+            deep: true
+        });
         window.addEventListener('keydown', this.handleWindowKeydown);
     },
     beforeDestroy() {
@@ -77,9 +73,9 @@ export default {
             // which should be closed on escape
             for (let i = this.items.length - 1; i >= 0; i--) {
                 const item = this.items[i];
-                if (!item.settings.overlay.show ||
-                    (origin === 'escape' && !item.settings.closeOnEscape) ||
-                    (origin === 'click' && !item.settings.overlay.closeOnClick)
+                if (
+                    (!item.settings.overlay.show && origin === 'click' && !item.settings.overlay.closeOnClick) ||
+                    (origin === 'escape' && !item.settings.closeOnEscape)
                 ) {
                     continue;
                 }
@@ -119,7 +115,7 @@ export default {
     pointer-events: all;
     top: 0;
     left: 0;
-    background: rgba(0,0,0,0.175);
+    background: rgba(0, 0, 0, 0.175);
     z-index: 1000;
     opacity: 1;
 }
