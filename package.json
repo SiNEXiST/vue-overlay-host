@@ -5,8 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name vue-overlay-host ./src/lib.js",
-    "lint": "vue-cli-service lint",
-    "test": "vue-cli-service test:unit --reporter=lcov --colors"
+    "build:docs": "vue-cli-service build --target app --mode docs --dest ./docs ./src/docs.js",
+    "test": "vue-cli-service test:unit --reporter=lcov --colors",
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "vue": "^2.5.16",
