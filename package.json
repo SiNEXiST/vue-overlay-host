@@ -5,7 +5,8 @@
   "main": "dist/vue-overlay-host.common.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib",
+    "build": "vue-cli-service build --target lib ./src/lib.js",
+    "build:docs": "vue-cli-service build --target app --mode docs --dest ./docs ./src/docs.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

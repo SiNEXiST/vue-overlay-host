@@ -46,11 +46,44 @@ const store = new Vuex.Store({
 </template>
 ```
 
+`SampleComponent.vue`
+```html
+<template>
+    <button v-on:click="openSomething()"></button>
+</template>
+
+<script>
+export default {
+    methods: {
+        openSomething() {
+            this.$store.dispatch('vue-overlay-host/open', {
+                component: 'my-modal',
+                overlay: {
+                    show: true,
+                    closeOnClick: true,
+                },
+                closeOnEscape: true,
+            })
+            .then(hosted => {
+                console.log('modal opened!');
+                return hosted.promise;
+            })
+            .then(() => console.log('modal closed!'));
+        }
+    }
+}
+</script>
+```
+
 ## Example
 
-An Example of how to use it is in the repository. See the `src/main.js`, `src/App.vue` and `src/components/example.vue` for more info.
+The hosted vesion can be seen on [the github.io Page!](https://sinexist.github.io/vue-overlay-host/)
+
+For the build of it or to test it locally,
+see the `src/main.js`, `src/App.vue` and `src/components/example.vue` Files for more info.
 
 Start up the Example-App by cloning the repo and then:
+
 ```sh
 # Install the dependencies with your package manager
 npm install
