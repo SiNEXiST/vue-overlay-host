@@ -74,7 +74,7 @@ export default {
             for (let i = this.items.length - 1; i >= 0; i--) {
                 const item = this.items[i];
                 if (
-                    (!item.settings.overlay.show && origin === 'click' && !item.settings.overlay.closeOnClick) ||
+                    (origin === 'click' && (!item.settings.overlay.show || !item.settings.overlay.closeOnClick)) ||
                     (origin === 'escape' && !item.settings.closeOnEscape)
                 ) {
                     continue;
