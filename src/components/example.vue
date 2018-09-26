@@ -1,6 +1,5 @@
 <template>
   <v-container class="example">
-    <img src="../assets/logo.png">
     <h1>Overlay Host</h1>
     <h2>Example</h2>
 
