@@ -7,7 +7,7 @@ import "material-design-icons-iconfont/dist/material-design-icons.css";
 
 import App from "./App.vue";
 
-import { OverlayHost, OverlayHostPlugin } from "./lib";
+import { OverlayHost, OverlayHostPlugin } from "../src/lib";
 import Example from "./components/Example";
 import Toast from "./components/Toast";
 
