@@ -1,13 +1,18 @@
 language: node_js
+
 node_js:
 - node
-- '8'
+- lts/*
+
 notifications:
   email: false
+
 install:
 - yarn install
+
 script:
 - yarn build
+
 deploy:
 - provider: releases
   api_key:
@@ -18,12 +23,10 @@ deploy:
   on:
     repo: SiNEXiST/vue-overlay-host
     tags: true
-    branch: master
 - provider: npm
-  email: sinexist@entailment.io
+  email: me@sinexist.de
   api_key:
-    secure: ulxEtfwfgBsYV6EYLhju0poruG+jQ4i5L1B9Wz0j9n9M+d0FyeymmnDc2xpkD6pZhbFKCDNCnRc7SCzNRJovnYGPFtvABC6e+NyrzogaLGWjnpK62ZioPTKB8UXB8jJRjmkhlZck2vbMfCBIQd6I6U9eO3cQkz47W4yuuNdrPEoCFYUvjT9ZmgEO/5ZxM10Hi/QrKs2RvslVZRonlZX57hK7chMBpyBNuTf63lWqenZg6MbhHEjYYZpK0CH0fe8uBOrBE717/tNg8B1vYoitsuKXRz1T5iw5VAcyKDYHbQ6+5PZ18pBzUzc80gP8XCEkPWsR1nkwODwzFXtTOqI0GqE9iqk+SbHaP3kY1bzMTtQ++MGzyma78/79CrWB80RLD/9PMtcWJue1srSltO8/HjsMdP5cGbuBWX9dbvSi/ccVeoJEpwqxQmXMumBK7ysrKTnN+wNWbrQO5Ppjo7MnTax67n/g+2ScUYxnyLTGG6nJjaFNZbCFj0fUhOSFw0zirq3hc84gl1iYGH8MfkSAZJ/IZn6RJ6RpA9fXmwCUgxlcEwZzlZw8B6eQfSzR8o/SxpMVQ82DddRaUFB5xZaPsTYHj/ghQI+de39fMIPTe1fj7zXYym/WPgoxa8ex2HiZsnj0B7qcrcGcGWJNz5XO7+/9BUs9u52+kfD6b9RpXgo=
+    secure: CtzTFGWrj6vgBb+33C/j3Fbcs3cp0o9gcV/vl/RnHzM/u+irOKmDKiWpkF/ud5ZDscaOZeRUFt2anRKros3GeMFnjgy2sHflDasTLRxFHPIKiZyT94Bar4t2NWWTxrse12+aivcU4M100oODJNJ2uH1liTPEa0/7A0n01mtd/DkiOfwYGoIi5R0lqTvlbvyRWnVG20V5nu4CgWh7gQSwky33oOzqC+dQ37BurijOdHdA9LFbpecqBvC0Zjm7ajLSPqB1pNpA1h+WfM0XeY5LRCFUkhc7k6HyijEbNeccs6+ea1R62R1nF9ZpBojtlUun6m1rakbF5Hw+IWbH/Fwy7hxFDCTUPuk6o6qRCTx2RP/kEeKuNbAOG5fUqGnKRYuxV6CgeuYe2/0gOv7Z8lb8P1/KQBC7Mlcwi8NLWq/dd9L4fYrkGm4X5pPMLyN4QhevTGigFRqYbAAy4UE3Jxt738zw7DdO0lnuxNnOMeSdeUSJCKN7V0+WGWujHwvnbd7H9xzZyHYzRUU/Rvw3RjThmSUH5R0IsIfyXxcxvY45oettffBlNv8CSKED9RTbrjhFTkKZRANHHNrzaLXxI4MzD3ji2mHuWIH0VR16FeXNRyqzZTiEHggc8AA5N+fCVEPvd8KiZ+SjDzmEMSsODoeGfc5joe2N07HaFxVMcFZfk8M=
   on:
     tags: true
     repo: SiNEXiST/vue-overlay-host
-    branch: master
