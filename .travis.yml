@@ -27,6 +27,9 @@ deploy:
   email: me@sinexist.de
   api_key:
     secure: CtzTFGWrj6vgBb+33C/j3Fbcs3cp0o9gcV/vl/RnHzM/u+irOKmDKiWpkF/ud5ZDscaOZeRUFt2anRKros3GeMFnjgy2sHflDasTLRxFHPIKiZyT94Bar4t2NWWTxrse12+aivcU4M100oODJNJ2uH1liTPEa0/7A0n01mtd/DkiOfwYGoIi5R0lqTvlbvyRWnVG20V5nu4CgWh7gQSwky33oOzqC+dQ37BurijOdHdA9LFbpecqBvC0Zjm7ajLSPqB1pNpA1h+WfM0XeY5LRCFUkhc7k6HyijEbNeccs6+ea1R62R1nF9ZpBojtlUun6m1rakbF5Hw+IWbH/Fwy7hxFDCTUPuk6o6qRCTx2RP/kEeKuNbAOG5fUqGnKRYuxV6CgeuYe2/0gOv7Z8lb8P1/KQBC7Mlcwi8NLWq/dd9L4fYrkGm4X5pPMLyN4QhevTGigFRqYbAAy4UE3Jxt738zw7DdO0lnuxNnOMeSdeUSJCKN7V0+WGWujHwvnbd7H9xzZyHYzRUU/Rvw3RjThmSUH5R0IsIfyXxcxvY45oettffBlNv8CSKED9RTbrjhFTkKZRANHHNrzaLXxI4MzD3ji2mHuWIH0VR16FeXNRyqzZTiEHggc8AA5N+fCVEPvd8KiZ+SjDzmEMSsODoeGfc5joe2N07HaFxVMcFZfk8M=
+  file_glob: true
+  file: dist/*
+  skip_cleanup: true
   on:
     tags: true
     repo: SiNEXiST/vue-overlay-host
