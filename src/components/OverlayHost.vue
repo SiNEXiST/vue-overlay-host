@@ -34,14 +34,14 @@ export default class OverlayHost extends Vue {
      */
     public showOverlay = false;
 
+    @moduleNamespace.State('items')
+    public items: EntrySetting[];
+
     /**
      * Handle of the store-watcher which should be removed once the
      * component is getting destroyed.
      */
     private storeWatcher() {}
-
-    @moduleNamespace.State('items')
-    public items: EntrySetting[];
 
     created() {
         this.storeWatcher = this.$store.watch(state => state[NAMESPACE_NAME].items, this.itemsChange, {

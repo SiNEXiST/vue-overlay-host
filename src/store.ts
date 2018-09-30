@@ -91,11 +91,11 @@ export function createModule(pluginSettings: PluginSettings): Module<OverlayHost
     };
 
     const mutations = {
-        setItems(state: OverlayHostState, items: EntrySetting[]) {
-            state.items = items;
+        setItems(instance: OverlayHostState, items: EntrySetting[]) {
+            instance.items = items;
         },
-        increaseCounter(state: OverlayHostState) {
-            state.idCounter++;
+        increaseCounter(instance: OverlayHostState) {
+            instance.idCounter++;
         }
     };
 
