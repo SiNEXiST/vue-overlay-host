@@ -1,7 +1,8 @@
-import { Store, StoreOptions, Module, ActionTree } from 'vuex';
-import { ShowOptions, RemoveRequest, OverlayHostState, EntrySetting, PluginSettings, ShowResponse } from '@/common';
+import { Module, Store } from 'vuex';
 
-function validateShowOptions(options: ShowOptions, defaultTimeout: number): ShowOptions {
+import { EntrySetting, OverlayHostState, PluginSettings, RemoveRequest, ShowOptions, ShowResponse, FinalShowOptions } from './common';
+
+function validateShowOptions(options: ShowOptions, defaultTimeout: number): FinalShowOptions {
     if (options == null || typeof options !== 'object') {
         throw new TypeError('The Settings have to be specified!');
     }
@@ -33,7 +34,12 @@ function validateShowOptions(options: ShowOptions, defaultTimeout: number): Show
         options.timeout = defaultTimeout;
     }
 
-    return options;
+    // Default the closeOnEscape to true
+    if (typeof options.closeOnEscape  !== 'boolean') {
+        options.closeOnEscape = true;
+    }
+
+    return options as FinalShowOptions;
 }
 
 function validateRemoveRequest(payload: number | RemoveRequest): RemoveRequest {
@@ -95,8 +101,6 @@ export function createModule(pluginSettings: PluginSettings): Module<OverlayHost
 
     const actions = {
         show(store: Store<OverlayHostState>, options: ShowOptions): Promise<ShowResponse> {
-            options = validateShowOptions(options, defaultTimeout);
-
             let resolve = () => {};
             let reject = () => {};
             const promise = new Promise<RemoveRequest>((re, rj) => {
@@ -110,11 +114,7 @@ export function createModule(pluginSettings: PluginSettings): Module<OverlayHost
                 id,
                 resolver: resolve,
                 rejector: reject,
-                settings: {
-                    timeout: defaultTimeout,
-                    closeOnEscape: true,
-                    ...options
-                }
+                settings: validateShowOptions(options, defaultTimeout),
             };
 
             if (item.settings.timeout != null && item.settings.timeout > 0) {
@@ -148,7 +148,7 @@ export function createModule(pluginSettings: PluginSettings): Module<OverlayHost
             didRemoveElement.resolver({ value: payload.value, origin: payload.origin });
             return Promise.resolve(true);
         },
-        abor(store: Store<OverlayHostState>, payload: RemoveRequest): Promise<boolean> {
+        abort(store: Store<OverlayHostState>, payload: RemoveRequest): Promise<boolean> {
             payload = validateRemoveRequest(payload);
             const didRemoveElement = removeEntryFromStore(store, payload.id);
 

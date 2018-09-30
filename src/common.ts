@@ -19,12 +19,12 @@ export interface EntrySetting {
     settings: FinalShowOptions;
 }
 
-interface OverlayOptions {
+export interface OverlayOptions {
     show: boolean;
     closeOnClick: boolean;
 }
 
-interface BaseShowOptions {
+export interface BaseShowOptions {
     component: string | Vue;
     closeOnEscape?: boolean;
     timeout?: number;
@@ -33,7 +33,7 @@ interface BaseShowOptions {
     };
 }
 
-interface FinalShowOptions extends BaseShowOptions {
+export interface FinalShowOptions extends BaseShowOptions {
     overlay: OverlayOptions;
 }
 
