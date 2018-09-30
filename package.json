@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "private": false,
   "scripts": {
-    "build": "vue-cli-service build --target lib ./src/lib.js",
+    "build": "vue-cli-service build --target lib ./src/lib.ts",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
