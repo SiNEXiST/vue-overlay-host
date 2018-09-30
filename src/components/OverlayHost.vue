@@ -17,85 +17,100 @@
     </div>
 </template>
 
-<script>
-import { mapState } from 'vuex';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 
-export default {
-    name: 'overlay-host',
+import { NAMESPACE_NAME, EntrySetting } from '@/common';
+
+const moduleNamespace = namespace(NAMESPACE_NAME);
+
+@Component({
+    name: 'overlay-host'
+})
+export default class OverlayHost extends Vue {
+    /**
+     * Flag if the Overlay (behind the elements) should be shown.
+     */
+    public showOverlay = false;
+
+    /**
+     * Handle of the store-watcher which should be removed once the
+     * component is getting destroyed.
+     */
+    private storeWatcher() {}
+
+    @moduleNamespace.State('items')
+    public items: EntrySetting[];
+
     created() {
-        this.storeWatcher = this.$store.watch(state => state['overlay-host'].items, this.itemsChange, {
+        this.storeWatcher = this.$store.watch(state => state[NAMESPACE_NAME].items, this.itemsChange, {
             deep: true
         });
         window.addEventListener('keydown', this.handleWindowKeydown);
-    },
+    }
+
     beforeDestroy() {
         if (this.storeWatcher != null) {
             this.storeWatcher();
         }
         window.removeEventListener('keydown', this.handleWindowKeydown);
-    },
-    data() {
-        return {
-            storeWatcher: null,
-            showOverlay: false
-        };
-    },
-    computed: {
-        ...mapState('overlay-host', ['items'])
-    },
-    methods: {
-        itemsChange() {
-            this.showOverlay = false;
-            for (let i = 0; i < this.items.length; i++) {
-                if (this.items[i].settings.overlay.show) {
-                    this.showOverlay = true;
-                    break;
-                }
-            }
-        },
-        overlayClick() {
-            this.removeLast('click');
-        },
-        handleWindowKeydown(event) {
-            if (event.key === 'Escape' || event.keyCode === 27) {
-                event.preventDefault();
-                this.removeLast('escape');
-            }
-        },
-        removeLast(origin) {
-            // No items to iterate over
-            if (this.items.length <= 0) {
-                return;
-            }
-            let removed = false;
+    }
 
-            // Clone the items to be able to edit it
-            const workItems = [...this.items];
-
-            // Iterate over the array in reverse to get the latestly added item
-            // which should be closed on escape
-            for (let i = workItems.length - 1; i >= 0; i--) {
-                const item = workItems[i];
-                if (
-                    (origin === 'click' && (!item.settings.overlay.show || !item.settings.overlay.closeOnClick)) ||
-                    (origin === 'escape' && !item.settings.closeOnEscape)
-                ) {
-                    continue;
-                }
-
-                clearTimeout(item.timeoutId);
-                item.resolver({ value: undefined, origin });
-                workItems.splice(i, 1);
-                removed = true;
+    itemsChange() {
+        this.showOverlay = false;
+        for (let i = 0; i < this.items.length; i++) {
+            if (this.items[i].settings.overlay.show) {
+                this.showOverlay = true;
                 break;
-            }
-
-            if (removed) {
-                this.$store.commit('overlay-host/setItems', workItems);
             }
         }
     }
-};
+
+    overlayClick() {
+        this.removeLast('click');
+    }
+
+    handleWindowKeydown(event: KeyboardEvent) {
+        if (event.key === 'Escape' || event.keyCode === 27) {
+            event.preventDefault();
+            this.removeLast('escape');
+        }
+    }
+
+    removeLast(origin: 'click' | 'escape') {
+        // No items to iterate over
+        if (this.items.length <= 0) {
+            return;
+        }
+        let removed = false;
+
+        // Clone the items to be able to edit it
+        const workItems = [...this.items];
+
+        // Iterate over the array in reverse to get the latestly added item
+        // which should be closed on escape
+        for (let i = workItems.length - 1; i >= 0; i--) {
+            const item = workItems[i];
+            if (
+                (origin === 'click' && (!item.settings.overlay.show || !item.settings.overlay.closeOnClick)) ||
+                (origin === 'escape' && !item.settings.closeOnEscape)
+            ) {
+                continue;
+            }
+
+            clearTimeout(item.timeoutId);
+            item.resolver({ value: undefined, origin });
+            workItems.splice(i, 1);
+            removed = true;
+            break;
+        }
+
+        if (removed) {
+            this.$store.commit(`${NAMESPACE_NAME}/setItems`, workItems);
+        }
+    }
+}
 </script>
 
 <style>
