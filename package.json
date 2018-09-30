@@ -1,16 +1,15 @@
 {
-  "name": "vue-overlay-host",
-  "version": "0.1.2",
-  "private": false,
-  "main": "dist/vue-overlay-host.common.js",
+  "name": "vue-overlay-host-ghpage",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve ./example/main.js",
-    "build": "vue-cli-service build --target lib ./src/lib.js",
-    "build:docs": "vue-cli-service build --target app --mode docs --dest ./docs ./example/main.js",
+    "serve": "vue-cli-service serve ./src/main.js",
+    "build": "vue-cli-service build ./src/main.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "vue": "^2.5.17",
+    "vue-overlay-host": "^0.1.1",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
