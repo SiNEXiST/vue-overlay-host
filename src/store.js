@@ -6,8 +6,7 @@ function validateSettings(settings) {
     if (
         !settings.hasOwnProperty('component') ||
         settings.component == null ||
-        (typeof settings !== 'string' &&
-            typeof settings !== 'object')
+        (typeof settings !== 'string' && typeof settings !== 'object')
     ) {
         new TypeError('The Settings does not have a valid component property!');
         return;
@@ -62,16 +61,12 @@ function removeItem(store, payload) {
     };
 }
 
-export default function (pluginSettings) {
+export default function(pluginSettings) {
     if (typeof pluginSettings === 'number') {
         pluginSettings = {
             timeout: pluginSettings
         };
-    } else if (
-        pluginSettings == null ||
-        typeof pluginSettings !== 'object' ||
-        Array.isArray(pluginSettings)
-    ) {
+    } else if (pluginSettings == null || typeof pluginSettings !== 'object' || Array.isArray(pluginSettings)) {
         // Apply default
         pluginSettings = {};
     }
@@ -120,16 +115,19 @@ export default function (pluginSettings) {
                         store.dispatch('close', { id: item.id, origin: 'timeout' });
                     }, item.settings.timeout);
                 }
-                const items = store.state.items;
-                items.push(item);
-                store.commit('setItems', items);
+
+                // Clone the items and push the new Item onto it
+                // Then commit it to the store
+                const workItems = [...store.state.items];
+                workItems.push(item);
+                store.commit('setItems', workItems);
 
                 return {
                     id,
                     promise,
                     close: (value, origin) => store.dispatch('close', { id, value, origin }),
-                    abort: (value, origin) => store.dispatch('abort', { id, value, origin }),
-                }
+                    abort: (value, origin) => store.dispatch('abort', { id, value, origin })
+                };
             },
             close(store, payload) {
                 const res = removeItem(store, payload);

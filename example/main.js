@@ -19,6 +19,7 @@ Vue.use(Vuex);
 Vue.use(Vuetify);
 
 const store = new Vuex.Store({
+  strict: true,
   plugins: [OverlayHostPlugin]
 });
 

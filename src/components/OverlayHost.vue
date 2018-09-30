@@ -69,10 +69,13 @@ export default {
             }
             let removed = false;
 
+            // Clone the items to be able to edit it
+            const workItems = [...this.items];
+
             // Iterate over the array in reverse to get the latestly added item
             // which should be closed on escape
-            for (let i = this.items.length - 1; i >= 0; i--) {
-                const item = this.items[i];
+            for (let i = workItems.length - 1; i >= 0; i--) {
+                const item = workItems[i];
                 if (
                     (origin === 'click' && (!item.settings.overlay.show || !item.settings.overlay.closeOnClick)) ||
                     (origin === 'escape' && !item.settings.closeOnEscape)
@@ -82,13 +85,13 @@ export default {
 
                 clearTimeout(item.timeoutId);
                 item.resolver({ value: undefined, origin });
-                this.items.splice(i, 1);
+                workItems.splice(i, 1);
                 removed = true;
                 break;
             }
 
             if (removed) {
-                this.$store.commit('overlay-host/setItems', this.items);
+                this.$store.commit('overlay-host/setItems', workItems);
             }
         }
     }
