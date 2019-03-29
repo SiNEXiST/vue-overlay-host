@@ -1,6 +1,14 @@
 import { Module, Store } from 'vuex';
 
-import { EntrySetting, OverlayHostState, PluginSettings, RemoveRequest, ShowOptions, ShowResponse, FinalShowOptions } from './common';
+import {
+    EntrySetting,
+    OverlayHostState,
+    PluginSettings,
+    RemoveRequest,
+    ShowOptions,
+    ShowResponse,
+    FinalShowOptions,
+} from './common';
 
 function validateShowOptions(options: ShowOptions, defaultTimeout: number): FinalShowOptions {
     if (options == null || typeof options !== 'object') {
@@ -19,13 +27,13 @@ function validateShowOptions(options: ShowOptions, defaultTimeout: number): Fina
     if (typeof options.overlay === 'boolean') {
         options.overlay = {
             show: options.overlay,
-            closeOnClick: true
+            closeOnClick: true,
         };
         // Default it to not show an overlay
     } else if (options.overlay == null || typeof options.overlay !== 'object') {
         options.overlay = {
             show: false,
-            closeOnClick: false
+            closeOnClick: false,
         };
     }
 
@@ -35,7 +43,7 @@ function validateShowOptions(options: ShowOptions, defaultTimeout: number): Fina
     }
 
     // Default the closeOnEscape to true
-    if (typeof options.closeOnEscape  !== 'boolean') {
+    if (typeof options.closeOnEscape !== 'boolean') {
         options.closeOnEscape = true;
     }
 
@@ -46,6 +54,7 @@ function validateRemoveRequest(payload: number | RemoveRequest): RemoveRequest {
     if (typeof payload === 'number') {
         payload = { id: payload };
     }
+
     return payload;
 }
 
@@ -67,6 +76,7 @@ function removeEntryFromStore(store: Store<OverlayHostState>, id: number): false
 
     if (removed) {
         store.commit('setItems', workItems);
+
         return removedItem as EntrySetting;
     }
 
@@ -76,7 +86,7 @@ function removeEntryFromStore(store: Store<OverlayHostState>, id: number): false
 export function createModule(pluginSettings: PluginSettings): Module<OverlayHostState, any> {
     if (typeof pluginSettings === 'number') {
         pluginSettings = {
-            timeout: pluginSettings
+            timeout: pluginSettings,
         };
     } else if (pluginSettings == null || typeof pluginSettings !== 'object' || Array.isArray(pluginSettings)) {
         // Apply default
@@ -87,7 +97,7 @@ export function createModule(pluginSettings: PluginSettings): Module<OverlayHost
 
     const state: OverlayHostState = {
         items: [],
-        idCounter: 0
+        idCounter: 0,
     };
 
     const mutations = {
@@ -96,13 +106,15 @@ export function createModule(pluginSettings: PluginSettings): Module<OverlayHost
         },
         increaseCounter(instance: OverlayHostState) {
             instance.idCounter++;
-        }
+        },
     };
 
     const actions = {
         show(store: Store<OverlayHostState>, options: ShowOptions): Promise<ShowResponse> {
+            // tslint:disable:no-empty
             let resolve = () => {};
             let reject = () => {};
+            // tslint:enable:no-empty
             const promise = new Promise<RemoveRequest>((re, rj) => {
                 resolve = re;
                 reject = rj;
@@ -134,7 +146,8 @@ export function createModule(pluginSettings: PluginSettings): Module<OverlayHost
                 promise,
                 close: (value?: any, origin?: string) =>
                     store.dispatch('close', { id, value, origin } as RemoveRequest),
-                abort: (value?: any, origin?: string) => store.dispatch('abort', { id, value, origin } as RemoveRequest)
+                abort: (value?: any, origin?: string) =>
+                    store.dispatch('abort', { id, value, origin } as RemoveRequest),
             });
         },
         close(store: Store<OverlayHostState>, payload: RemoveRequest): Promise<boolean> {
@@ -146,6 +159,7 @@ export function createModule(pluginSettings: PluginSettings): Module<OverlayHost
             }
 
             didRemoveElement.resolver({ value: payload.value, origin: payload.origin });
+
             return Promise.resolve(true);
         },
         abort(store: Store<OverlayHostState>, payload: RemoveRequest): Promise<boolean> {
@@ -157,8 +171,9 @@ export function createModule(pluginSettings: PluginSettings): Module<OverlayHost
             }
 
             didRemoveElement.rejector({ value: payload.value, origin: payload.origin });
+
             return Promise.resolve(true);
-        }
+        },
     };
 
     return {

@@ -14,8 +14,8 @@ export interface OverlayHostState {
 export interface EntrySetting {
     id: number;
     timeoutId?: number;
-    resolver: (value?: any, origin?: string) => any;
-    rejector: (value?: any, origin?: string) => any;
+    resolver(value?: any, origin?: string): any;
+    rejector(value?: any, origin?: string): any;
     settings: FinalShowOptions;
 }
 
@@ -44,8 +44,8 @@ export interface ShowOptions extends BaseShowOptions {
 export interface ShowResponse {
     id: number;
     promise: Promise<RemoveRequest>;
-    close: (value?: any, origin?: string) => void;
-    abort: (value?: any, origin?: string) => void;
+    close(value?: any, origin?: string): void;
+    abort(value?: any, origin?: string): void;
 }
 
 export interface RemoveRequest {

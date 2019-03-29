@@ -21,7 +21,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
-import { NAMESPACE_NAME, EntrySetting } from '@/common';
+import { NAMESPACE_NAME, EntrySetting } from '../common';
 
 const moduleNamespace = namespace(NAMESPACE_NAME);
 
@@ -41,20 +41,25 @@ export default class OverlayHost extends Vue {
      * Handle of the store-watcher which should be removed once the
      * component is getting destroyed.
      */
-    private storeWatcher() {}
+    // tslint:disable-next-line:no-empty
+    private storeWatcher() { }
 
     created() {
-        this.storeWatcher = this.$store.watch(state => state[NAMESPACE_NAME].items, this.itemsChange, {
+        this.storeWatcher = this.$store.watch(state => state[NAMESPACE_NAME].items, () => this.itemsChange(), {
             deep: true
         });
-        window.addEventListener('keydown', this.handleWindowKeydown);
+        window.addEventListener('keydown', event => {
+            this.handleWindowKeydown(event);
+        });
     }
 
     beforeDestroy() {
         if (this.storeWatcher != null) {
             this.storeWatcher();
         }
-        window.removeEventListener('keydown', this.handleWindowKeydown);
+        window.removeEventListener('keydown', event => {
+            this.handleWindowKeydown(event);
+        });
     }
 
     itemsChange() {
